@@ -1,10 +1,12 @@
 import pandas as pd
 
 file = pd.read_csv("cmg.csv")
+file_spy = pd.read_csv("spy.csv")
 
 #print(type(file["Return"].get(1)))
 
 file['True Label'] = ''
+file_spy['True Label'] = ''
 
 #a = file.iloc[[0]]
 #print(a)
@@ -17,67 +19,75 @@ file['True Label'] = ''
 
 
 # Question 1.1 ==========================================================================================================
-i = 0
 file_length = len(file.index)
-while i < file_length:
-	r_balance = file["Return"].get(i)
-	if r_balance < 0:
-		file.at[i, "True Label"] = "-"
-	else:
-		file.at[i, "True Label"] = "+"
-	i += 1
+file_length_2 = len(file_spy.index)
 
+def q11(file_len, working_file):
+	i = 0
+	while i < file_len:
+		r_balance = working_file["Return"].get(i)
+		if r_balance < 0:
+			working_file.at[i, "True Label"] = "-"
+		else:
+			working_file.at[i, "True Label"] = "+"
+		i += 1
+	return working_file
+
+file = q11(file_length, file)
+file_spy = q11(file_length_2, file_spy)
 
 # Question 1.2 ==========================================================================================================
-#test = file["Date"].get(0)
-#print(test.split("/")[2])
-#if test.split("/")[2] == "17":
-#	print("yuh")
-i = 0
-l_val = 0
-l_pos = 0
-l_neg = 0
-while i < file_length:
-	temp = file["Date"].get(i)
-	if temp.split("/")[2] == "20":
-		i = file_length
-	else:
-		l_val += 1
-	if file["True Label"].get(i) == "+":
-		l_pos += 1
-	elif file["True Label"].get(i) == "-":
-		l_neg += 1
-	i += 1
+print("Question 1.2:")
+def q12(file_len, working_file):
+	i = 0
+	l_val = 0
+	l_pos = 0
+	l_neg = 0
+	while i < file_len:
+		temp = working_file["Date"].get(i)
+		if temp.split("/")[2] == "20":
+			i = file_len
+		else:
+			l_val += 1
+		if working_file["True Label"].get(i) == "+":
+			l_pos += 1
+		elif working_file["True Label"].get(i) == "-":
+			l_neg += 1
+		i += 1
+	return l_pos, l_val
 
-print("The probability that the first day of year 4 will be an up day is " + 
+l_pos, l_val = q12(file_length, file)
+print("The probability that the first day of year 4 for Chipotle will be an up day is " + 
 	str(round((l_pos/l_val) * 100, 2)) + "%")
-
+l_pos2, l_val2 = q12(file_length_2, file_spy)
+print("The probability that the first day of year 4 for Spy will be an up day is " + 
+	str(round((l_pos2/l_val2) * 100, 2)) + "%\n")
 
 
 # Question 1.3 & 1.4 ====================================================================================================
-
-def q13(symbol):
+print("Question 1.3")
+def q13(symbol, file_len, working_file):
 	# Below is k value followed by total pattern found then pos pattern found
 	k = [[1, 0, 0], [2, 0, 0], [3, 0, 0]]
 
 	k_step = 0
 	while k_step < len(k):
 		i = k[k_step][0]
-		while i < file_length:
-			temp = file["Date"].get(i)
+		while i < file_len:
+			temp = working_file["Date"].get(i)
 			if temp.split("/")[2] == "20":
-				i = file_length
+				i = file_len
 			found_pat = True
 			prev = i - 1
 
 
 			while i - prev < k[k_step][0] + 1:
-				if file["True Label"].get(prev) == symbol:
+				if working_file["True Label"].get(prev) == symbol:
 					found_pat = False
 				prev -= 1
 			if found_pat:
 				k[k_step][1] += 1
-				if file["True Label"].get(i) == "+":
+				if working_file["True Label"].get(i) == "+":
 					k[k_step][2] += 1
 			# if the k previous elements are "-"
 				# add one to total pattern found for this k
@@ -87,20 +97,37 @@ def q13(symbol):
 		k_step += 1
 	return k
 
-k = q13("-")
-print("For the down day patterns, k = 1, there is a " + str( round((k[0][2]/k[0][1])*100, 2) ) + 
+k = q13("-", file_length, file)
+k3 = q13("-", file_length_2, file_spy)
+print("For the Chipotle down day patterns, k = 1, there is a " + str( round((k[0][2]/k[0][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
-print("For the down day patterns, k = 2, there is a " + str( round((k[1][2]/k[1][1])*100, 2) ) + 
+print("For the Chipotle down day patterns, k = 2, there is a " + str( round((k[1][2]/k[1][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
-print("For the down day patterns, k = 3, there is a " + str( round((k[2][2]/k[2][1])*100, 2) ) + 
+print("For the Chipotle down day patterns, k = 3, there is a " + str( round((k[2][2]/k[2][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
 
-k2 = q13("+")
-print("For the up day patterns, k = 1, there is a " + str( round((k2[0][2]/k2[0][1])*100, 2) ) + 
+print("For the Spy down day patterns, k = 1, there is a " + str( round((k3[0][2]/k3[0][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
-print("For the up day patterns, k = 2, there is a " + str( round((k2[1][2]/k2[1][1])*100, 2) ) + 
+print("For the Spy down day patterns, k = 2, there is a " + str( round((k3[1][2]/k3[1][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
-print("For the up day patterns, k = 3, there is a " + str( round((k2[2][2]/k2[2][1])*100, 2) ) + 
+print("For the Spy down day patterns, k = 3, there is a " + str( round((k3[2][2]/k3[2][1])*100, 2) ) + 
+	"% probability the following day will be an up day\n")
+
+print("Question 1.4")
+k2 = q13("+", file_length, file)
+k4 = q13("+", file_length_2, file_spy)
+print("For the Chipotle up day patterns, k = 1, there is a " + str( round((k2[0][2]/k2[0][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
+print("For the Chipotle up day patterns, k = 2, there is a " + str( round((k2[1][2]/k2[1][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
+print("For the Chipotle up day patterns, k = 3, there is a " + str( round((k2[2][2]/k2[2][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
+
+print("For the Spy up day patterns, k = 1, there is a " + str( round((k4[0][2]/k4[0][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
+print("For the Spy up day patterns, k = 2, there is a " + str( round((k4[1][2]/k4[1][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
+print("For the Spy up day patterns, k = 3, there is a " + str( round((k4[2][2]/k4[2][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
 
 
