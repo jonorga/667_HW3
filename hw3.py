@@ -116,7 +116,15 @@ print("For the up day patterns, k = 3, there is a " + str( round((k2[2][2]/k2[2]
 # From day 1 of year 4
 # Look at the last W days (including the current date) and see how
 # many times that pattern occurs and is followed with a "+" vs "-"
-
+i = 0
+found_year_4 = False
+while i < file_length:
+	temp = file["Date"].get(i)
+	if temp.split("/")[2] == "20":
+		found_year_4 = True
+	if found_year_4:
+		a = 0
+	i += 1
 
 
 
