@@ -16,7 +16,7 @@ file['True Label'] = ''
 #print(len(file.index))
 
 
-# Question 1.1 ================================
+# Question 1.1 ==========================================================================================================
 i = 0
 file_length = len(file.index)
 while i < file_length:
@@ -28,7 +28,7 @@ while i < file_length:
 	i += 1
 
 
-# Question 1.2 ================================
+# Question 1.2 ==========================================================================================================
 #test = file["Date"].get(0)
 #print(test.split("/")[2])
 #if test.split("/")[2] == "17":
@@ -49,15 +49,12 @@ while i < file_length:
 		l_neg += 1
 	i += 1
 
-print("The probability that the first day of year 4 will be an up day is " + str(round((l_pos/l_val) * 100, 2)) + "%")
+print("The probability that the first day of year 4 will be an up day is " + 
+	str(round((l_pos/l_val) * 100, 2)) + "%")
 
 
 
-# Question 1.3 & 1.4 ====================================
-# Calculate based on the first three years of data again
-# Scan through for k (1, 2, 3) down days
-# record how many are followed by an up day
-	# I need to store total number of times that pattern emerged vs times it was follow by +
+# Question 1.3 & 1.4 ====================================================================================================
 
 def q13(symbol):
 	# Below is k value followed by total pattern found then pos pattern found
@@ -105,6 +102,22 @@ print("For the up day patterns, k = 2, there is a " + str( round((k2[1][2]/k2[1]
 	"% probability the following day will be an up day")
 print("For the up day patterns, k = 3, there is a " + str( round((k2[2][2]/k2[2][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
+
+
+# Question 2.1 ==========================================================================================================
+# Starting in year 4, looking at the last W days (including the current day)
+# How many times did the same pattern show up and was follow by "+" vs "-"?
+# W = 2, 3, 4
+
+
+
+# Add column for predicted labels w2, w3, w4
+
+# From day 1 of year 4
+# Look at the last W days (including the current date) and see how
+# many times that pattern occurs and is followed with a "+" vs "-"
+
+
 
 
 print("\n\n\n")
