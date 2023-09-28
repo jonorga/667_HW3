@@ -59,35 +59,38 @@ print("The probability that the first day of year 4 will be an up day is " + str
 # record how many are followed by an up day
 	# I need to store total number of times that pattern emerged vs times it was follow by +
 
-# Below is k value followed by total pattern found then pos pattern found
-k = [[1, 0, 0], [2, 0, 0], [3, 0, 0]]
+def q13():
+	# Below is k value followed by total pattern found then pos pattern found
+	k = [[1, 0, 0], [2, 0, 0], [3, 0, 0]]
 
-k_step = 0
-while k_step < len(k):
-	i = k[k_step][0]
-	while i < file_length:
-		temp = file["Date"].get(i)
-		if temp.split("/")[2] == "20":
-			i = file_length
-		found_pat = True
-		prev = i - 1
+	k_step = 0
+	while k_step < len(k):
+		i = k[k_step][0]
+		while i < file_length:
+			temp = file["Date"].get(i)
+			if temp.split("/")[2] == "20":
+				i = file_length
+			found_pat = True
+			prev = i - 1
 
 
-		while i - prev < k[k_step][0] + 1:
-			if file["True Label"].get(prev) == "+":
-				found_pat = False
-			prev -= 1
-		if found_pat:
-			k[k_step][1] += 1
-			if file["True Label"].get(i) == "+":
-				k[k_step][2] += 1
-		# if the k previous elements are "-"
-			# add one to total pattern found for this k
-			# if next is "+"
-				# add one to pos pattern for this k
-		i += 1
-	k_step += 1
+			while i - prev < k[k_step][0] + 1:
+				if file["True Label"].get(prev) == "+":
+					found_pat = False
+				prev -= 1
+			if found_pat:
+				k[k_step][1] += 1
+				if file["True Label"].get(i) == "+":
+					k[k_step][2] += 1
+			# if the k previous elements are "-"
+				# add one to total pattern found for this k
+				# if next is "+"
+					# add one to pos pattern for this k
+			i += 1
+		k_step += 1
+	return k
 
+k = q13()
 print("For the down day patterns, k = 1, there is a " + str( round((k[0][2]/k[0][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
 print("For the down day patterns, k = 2, there is a " + str( round((k[1][2]/k[1][1])*100, 2) ) + 
@@ -97,9 +100,6 @@ print("For the down day patterns, k = 3, there is a " + str( round((k[2][2]/k[2]
 
 print(k)
 
-<<<<<<< HEAD
-# Test comment
-=======
->>>>>>> 474d07a8a5f1ad1040071f1ecdd728f367ffcbc9
+
 
 print("\n\n\n")
