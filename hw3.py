@@ -59,7 +59,7 @@ print("The probability that the first day of year 4 will be an up day is " + str
 # record how many are followed by an up day
 	# I need to store total number of times that pattern emerged vs times it was follow by +
 
-def q13():
+def q13(symbol):
 	# Below is k value followed by total pattern found then pos pattern found
 	k = [[1, 0, 0], [2, 0, 0], [3, 0, 0]]
 
@@ -75,7 +75,7 @@ def q13():
 
 
 			while i - prev < k[k_step][0] + 1:
-				if file["True Label"].get(prev) == "+":
+				if file["True Label"].get(prev) == symbol:
 					found_pat = False
 				prev -= 1
 			if found_pat:
@@ -90,7 +90,7 @@ def q13():
 		k_step += 1
 	return k
 
-k = q13()
+k = q13("-")
 print("For the down day patterns, k = 1, there is a " + str( round((k[0][2]/k[0][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
 print("For the down day patterns, k = 2, there is a " + str( round((k[1][2]/k[1][1])*100, 2) ) + 
@@ -98,8 +98,13 @@ print("For the down day patterns, k = 2, there is a " + str( round((k[1][2]/k[1]
 print("For the down day patterns, k = 3, there is a " + str( round((k[2][2]/k[2][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
 
-print(k)
-
+k2 = q13("+")
+print("For the up day patterns, k = 1, there is a " + str( round((k2[0][2]/k2[0][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
+print("For the up day patterns, k = 2, there is a " + str( round((k2[1][2]/k2[1][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
+print("For the up day patterns, k = 3, there is a " + str( round((k2[2][2]/k2[2][1])*100, 2) ) + 
+	"% probability the following day will be an up day")
 
 
 print("\n\n\n")
