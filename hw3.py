@@ -97,6 +97,9 @@ print("For the down day patterns, k = 3, there is a " + str( round((k[2][2]/k[2]
 
 print(k)
 
+<<<<<<< HEAD
 # Test comment
+=======
+>>>>>>> 474d07a8a5f1ad1040071f1ecdd728f367ffcbc9
 
 print("\n\n\n")
