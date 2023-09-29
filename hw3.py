@@ -139,19 +139,72 @@ print("For the Spy up day patterns, k = 3, there is a " + str( round((k4[2][2]/k
 
 
 # Add column for predicted labels w2, w3, w4
+file['W2'] = ''
+file_spy['W2'] = ''
+file['W3'] = ''
+file_spy['W3'] = ''
+file['W4'] = ''
+file_spy['W4'] = ''
 
 # From day 1 of year 4
 # Look at the last W days (including the current date) and see how
 # many times that pattern occurs and is followed with a "+" vs "-"
-i = 0
-found_year_4 = False
-while i < file_length:
-	temp = file["Date"].get(i)
-	if temp.split("/")[2] == "20":
-		found_year_4 = True
-	if found_year_4:
-		a = 0
-	i += 1
+def q21(file_len, working_file, file_name):
+	i = 0
+	found_year_4 = False
+	while i < file_len:
+		print("Predicting values for " + file_name + " ....... "
+		 + str(round((i/file_len)*100, 2)) + "%", end="\r", flush=True)
+		temp = working_file["Date"].get(i)
+		if temp.split("/")[2] == "20":
+			found_year_4 = True
+		if found_year_4:
+			w = [2, 3, 4]
+			for val in w:
+				pos_val = 0
+				neg_val = 0
+				j = i
+				pattern = []
+				temp_val = val
+				while temp_val > 0:
+					pattern.append(working_file["True Label"].get(j))
+					temp_val -= 1
+					j -= 1
+				while j > val:
+					pattern_check = []
+					count = 0
+					while count < val:
+						pattern_check.append(working_file["True Label"].get(j - count))
+						count += 1
+					if pattern == pattern_check:
+						if working_file["True Label"].get(j + 1) == "+":
+							pos_val += 1
+						elif working_file["True Label"].get(j + 1) == "-":
+							neg_val += 1
+					# TODO this needs to be added back into the working file
+					j -= 1
+				if val == 2:
+					if pos_val > neg_val:
+						working_file.at[i + 1, "W2"] = "+"
+					else:
+						working_file.at[i + 1, "W2"] = "-"
+				elif val == 3:
+					if pos_val > neg_val:
+						working_file.at[i + 1, "W3"] = "+"
+					else:
+						working_file.at[i + 1, "W3"] = "-"
+				elif val == 4:
+					if pos_val > neg_val:
+						working_file.at[i + 1, "W4"] = "+"
+					else:
+						working_file.at[i + 1, "W4"] = "-"
+		i += 1
+	print("Predicting values for " + file_name + " ....... 100.00%")
+	return working_file
+
+file = q21(file_length, file, "Chipotle")
+file_spy = q21(file_length_2, file_spy, "Spy")
+
 
 
 
