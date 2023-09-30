@@ -313,6 +313,23 @@ print("Ensemble labels computed for Chipotle and Spy stock.\n")
 
 # Question 3.2 ==========================================================================================================
 print("Question 3.2")
+def q32(file_len, working_file, file_name):
+	i = 0
+	total_ensem_labels = 0
+	correct_ensem_labels = 0
+	while i < file_len:
+		if working_file["Ensemble Label"].get(i) == "+" or working_file["Ensemble Label"].get(i) == "-":
+			total_ensem_labels += 1
+			if working_file["Ensemble Label"].get(i) == working_file["True Label"].get(i):
+				correct_ensem_labels += 1
+		i += 1
+	ensem_accuracy = round((correct_ensem_labels/total_ensem_labels) * 100, 2)
+	print("For the " + file_name + " stock, the Ensemble Label predicted the correct output " 
+		+ str(ensem_accuracy) + "% of the time")
+
+q32(file_length, file, "Chipotle")
+q32(file_length_2, file_spy, "Spy")
+
 
 
 print("\n\n\n")
