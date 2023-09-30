@@ -279,7 +279,40 @@ print("")
 
 # Question 3.1 ==========================================================================================================
 print("Question 3.1")
+def q31(file_len, working_file):
+	working_file['Ensemble Label'] = ''
+	i = 0
+	while i < file_len:
+		pluses = 0
+		minuses = 0
+		if working_file["W2"].get(i) == "+":
+			pluses += 1
+		elif working_file["W2"].get(i) == "-":
+			minuses += 1
+		if working_file["W3"].get(i) == "+":
+			pluses += 1
+		elif working_file["W3"].get(i) == "-":
+			minuses += 1
+		if working_file["W4"].get(i) == "+":
+			pluses += 1
+		elif working_file["W4"].get(i) == "-":
+			minuses += 1
 
+		if pluses > minuses:
+			working_file.at[i, "Ensemble Label"] = "+"
+		elif minuses > pluses:
+			working_file.at[i, "Ensemble Label"] = "-"
+		i += 1
+	return working_file
+
+file = q31(file_length, file)
+file_spy = q31(file_length_2, file_spy)
+print("Ensemble labels computed for Chipotle and Spy stock.\n")
+
+
+
+# Question 3.2 ==========================================================================================================
+print("Question 3.2")
 
 
 print("\n\n\n")
