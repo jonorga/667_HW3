@@ -1,4 +1,6 @@
 import pandas as pd
+from os.path import exists
+
 
 file = pd.read_csv("cmg.csv")
 file_spy = pd.read_csv("spy.csv")
@@ -61,8 +63,7 @@ print("The probability that the first day of year 4 for Chipotle will be an up d
 	str(round((l_pos/l_val) * 100, 2)) + "%")
 l_pos2, l_val2 = q12(file_length_2, file_spy)
 print("The probability that the first day of year 4 for Spy will be an up day is " + 
-	str(round((l_pos2/l_val2) * 100, 2)) + "%\n")
-
+	str(round((l_pos2/l_val2) * 100, 2)) + "%")
 
 # Question 1.3 & 1.4 ====================================================================================================
 print("Question 1.3")
@@ -128,7 +129,7 @@ print("For the Spy up day patterns, k = 1, there is a " + str( round((k4[0][2]/k
 print("For the Spy up day patterns, k = 2, there is a " + str( round((k4[1][2]/k4[1][1])*100, 2) ) + 
 	"% probability the following day will be an up day")
 print("For the Spy up day patterns, k = 3, there is a " + str( round((k4[2][2]/k4[2][1])*100, 2) ) + 
-	"% probability the following day will be an up day")
+	"% probability the following day will be an up day\n")
 
 
 # Question 2.1 ==========================================================================================================
@@ -202,10 +203,60 @@ def q21(file_len, working_file, file_name):
 	print("Predicting values for " + file_name + " ....... 100.00%")
 	return working_file
 
-file = q21(file_length, file, "Chipotle")
-file_spy = q21(file_length_2, file_spy, "Spy")
+print("Question 2.1")
+if exists("cmg_frame.csv"):
+	file = pd.read_csv("cmg_frame.csv")
+	print("Read previously predicted Chipotle file")
+else:
+	file = q21(file_length, file, "Chipotle")
+	file.to_csv("cmg_frame.csv")
+
+if exists("spy_frame.csv"):
+	file_spy = pd.read_csv("spy_frame.csv")
+	print("Read previously predicted Spy file")
+else:
+	file_spy = q21(file_length_2, file_spy, "Spy")
+	file_spy.to_csv("spy_frame.csv")
 
 
+
+# Question 2.2 ==========================================================================================================
+def q22(file_len, working_file, file_name):
+	i = 0
+	w2_correct = 0
+	w2_total = 0
+	w3_correct = 0
+	w3_total = 0
+	w4_correct = 0
+	w4_total = 0
+	while i < file_len:
+		if working_file["W2"].get(i) == "+" or working_file["W2"].get(i) == "-":
+			w2_total += 1
+			if working_file["W2"].get(i) == working_file["True Label"].get(i):
+				w2_correct += 1
+		if working_file["W3"].get(i) == "+" or working_file["W3"].get(i) == "-":
+			w3_total += 1
+			if working_file["W3"].get(i) == working_file["True Label"].get(i):
+				w3_correct += 1
+		if working_file["W4"].get(i) == "+" or working_file["W4"].get(i) == "-":
+			w4_total += 1
+			if working_file["W4"].get(i) == working_file["True Label"].get(i):
+				w4_correct += 1
+		i += 1
+
+	w2_accuracy = round((w2_correct/w2_total) * 100, 2)
+	w3_accuracy = round((w3_correct/w3_total) * 100, 2)
+	w4_accuracy = round((w4_correct/w4_total) * 100, 2)
+	print("For the " + file_name + " stock, W = 2 predicted the label correctly " + str(w2_accuracy) + "% of the time")
+	print("For the " + file_name + " stock, W = 3 predicted the label correctly " + str(w3_accuracy) + "% of the time")
+	print("For the " + file_name + " stock, W = 4 predicted the label correctly " + str(w4_accuracy) + "% of the time")
+
+print("\nQuestion 2.2")
+q22(file_length, file, "Chipotle")
+q22(file_length_2, file_spy, "Spy")
+
+
+# Question 2.3 ==========================================================================================================
 
 
 print("\n\n\n")
