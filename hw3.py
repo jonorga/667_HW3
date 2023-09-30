@@ -1,5 +1,6 @@
 import pandas as pd
 from os.path import exists
+import matplotlib.pyplot as plt
 
 
 file = pd.read_csv("cmg.csv")
@@ -396,6 +397,130 @@ q334(file_length_2, file_spy, "Spy", "-")
 print("\nQuestion 3.4")
 q334(file_length, file, "Chipotle", "+")
 q334(file_length_2, file_spy, "Spy", "+")
+
+
+
+
+# Question 4 ============================================================================================================
+def q4(file_len, working_file, file_name):
+	i = 0
+
+	true_pos_2 = 0
+	true_pos_3 = 0
+	true_pos_4 = 0
+	true_pos_ensem = 0
+
+	false_pos_2 = 0
+	false_pos_3 = 0
+	false_pos_4 = 0
+	false_pos_ensem = 0
+
+	true_neg_2 = 0
+	true_neg_3 = 0
+	true_neg_4 = 0
+	true_neg_ensem = 0
+
+	false_neg_2 = 0
+	false_neg_3 = 0
+	false_neg_4 = 0
+	false_neg_ensem = 0
+
+	while i < file_len:
+		if working_file["True Label"].get(i) == "+" and working_file["W2"].get(i) == "+":
+			true_pos_2 += 1
+		if working_file["True Label"].get(i) == "+" and working_file["W3"].get(i) == "+":
+			true_pos_3 += 1
+		if working_file["True Label"].get(i) == "+" and working_file["W4"].get(i) == "+":
+			true_pos_4 += 1
+		if working_file["True Label"].get(i) == "+" and working_file["Ensemble Label"].get(i) == "+":
+			true_pos_ensem += 1
+
+		if working_file["True Label"].get(i) == "-" and working_file["W2"].get(i) == "+":
+			false_pos_2 += 1
+		if working_file["True Label"].get(i) == "-" and working_file["W3"].get(i) == "+":
+			false_pos_3 += 1
+		if working_file["True Label"].get(i) == "-" and working_file["W4"].get(i) == "+":
+			false_pos_4 += 1
+		if working_file["True Label"].get(i) == "-" and working_file["Ensemble Label"].get(i) == "+":
+			false_pos_ensem += 1
+
+		if working_file["True Label"].get(i) == "-" and working_file["W2"].get(i) == "-":
+			true_neg_2 += 1
+		if working_file["True Label"].get(i) == "-" and working_file["W3"].get(i) == "-":
+			true_neg_3 += 1
+		if working_file["True Label"].get(i) == "-" and working_file["W4"].get(i) == "-":
+			true_neg_4 += 1
+		if working_file["True Label"].get(i) == "-" and working_file["Ensemble Label"].get(i) == "-":
+			true_neg_ensem += 1
+
+		if working_file["True Label"].get(i) == "+" and working_file["W2"].get(i) == "-":
+			false_neg_2 += 1
+		if working_file["True Label"].get(i) == "+" and working_file["W3"].get(i) == "-":
+			false_neg_3 += 1
+		if working_file["True Label"].get(i) == "+" and working_file["W4"].get(i) == "-":
+			false_neg_4 += 1
+		if working_file["True Label"].get(i) == "+" and working_file["Ensemble Label"].get(i) == "-":
+			false_neg_ensem += 1
+
+		i += 1
+
+	true_pos_rate_2 = true_pos_2 / (true_pos_2 + false_neg_2)
+	true_pos_rate_3 = true_pos_3 / (true_pos_3 + false_neg_3)
+	true_pos_rate_4 = true_pos_4 / (true_pos_4 + false_neg_4)
+	true_pos_rate_ensem = true_pos_ensem / (true_pos_ensem + false_neg_ensem)
+
+	true_neg_rate_2 = true_neg_2 / (true_neg_2 + false_pos_2)
+	true_neg_rate_3 = true_neg_3 / (true_neg_3 + false_pos_3)
+	true_neg_rate_4 = true_neg_4 / (true_neg_4 + false_pos_4)
+	true_neg_rate_ensem = true_neg_ensem / (true_neg_ensem + false_pos_ensem)
+
+	result = [[true_pos_2, true_pos_3, true_pos_4, true_pos_ensem], 
+			  [false_pos_2, false_pos_3, false_pos_4, false_pos_ensem],
+			  [true_neg_2, true_neg_3, true_neg_4, true_neg_ensem],
+			  [false_neg_2, false_neg_3, false_neg_4, false_neg_ensem],
+			  [true_pos_rate_2, true_pos_rate_3, true_pos_rate_4, true_pos_rate_ensem],
+			  [true_neg_rate_2, true_neg_rate_3, true_neg_rate_4, true_neg_rate_ensem]]
+	return result
+
+
+
+data = [["2", "3", "4", "Ensemble", "2", "3", "4", "Ensemble"], 
+	["S&P-500", "S&P-500", "S&P-500", "S&P-500", "Chipotle", "Chipotle", "Chipotle", "Chipotle"]]
+
+
+
+
+print("\nQuestion 4")
+cmg_val = q4(file_length, file, "Chipotle")
+spy_val = q4(file_length_2, file_spy, "Spy")
+
+
+
+for cmg_item, spy_item in zip(cmg_val, spy_val):
+	data.append(spy_item)
+	data.append(cmg_item)
+
+
+
+df = pd.DataFrame(data, columns=['W', 'ticker', 'TP', 'FP', 'TN', 'FN', 'TPR', 'TNR'])
+
+fig, ax = plt.subplots()
+fig.patch.set_visible(False)
+ax.axis('off')
+ax.axis('tight')
+
+ax.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+fig.tight_layout()
+
+plt.show()
+
+#data = [10,20,30,40,50,60]
+  
+# Create the pandas DataFrame with column name is provided explicitly
+#df = pd.DataFrame(data, columns=['Numbers'])
+
+
 
 
 print("\n\n\n")
