@@ -39,7 +39,7 @@ file = q11(file_length, file)
 file_spy = q11(file_length_2, file_spy)
 
 # Question 1.2 ==========================================================================================================
-print("Question 1.2:")
+print("Question 1.2")
 def q12(file_len, working_file):
 	i = 0
 	l_val = 0
@@ -250,13 +250,36 @@ def q22(file_len, working_file, file_name):
 	print("For the " + file_name + " stock, W = 2 predicted the label correctly " + str(w2_accuracy) + "% of the time")
 	print("For the " + file_name + " stock, W = 3 predicted the label correctly " + str(w3_accuracy) + "% of the time")
 	print("For the " + file_name + " stock, W = 4 predicted the label correctly " + str(w4_accuracy) + "% of the time")
+	return [w2_accuracy, w3_accuracy, w4_accuracy]
 
 print("\nQuestion 2.2")
-q22(file_length, file, "Chipotle")
-q22(file_length_2, file_spy, "Spy")
+w_accuracy_cmg = q22(file_length, file, "Chipotle")
+w_accuracy_spy = q22(file_length_2, file_spy, "Spy")
+print("")
 
 
 # Question 2.3 ==========================================================================================================
+print("Question 2.3")
+if w_accuracy_cmg[0] > w_accuracy_cmg[1] and w_accuracy_cmg[0] > w_accuracy_cmg[2]:
+	print("For Chipotle, W = 2 gave the highest accuracy")
+if w_accuracy_cmg[1] > w_accuracy_cmg[0] and w_accuracy_cmg[1] > w_accuracy_cmg[2]:
+	print("For Chipotle, W = 3 gave the highest accuracy")
+if w_accuracy_cmg[2] > w_accuracy_cmg[1] and w_accuracy_cmg[2] > w_accuracy_cmg[0]:
+	print("For Chipotle, W = 4 gave the highest accuracy")
+
+if w_accuracy_spy[0] > w_accuracy_spy[1] and w_accuracy_spy[0] > w_accuracy_spy[2]:
+	print("For Spy, W = 2 gave the highest accuracy")
+if w_accuracy_spy[1] > w_accuracy_spy[0] and w_accuracy_spy[1] > w_accuracy_spy[2]:
+	print("For Spy, W = 3 gave the highest accuracy")
+if w_accuracy_spy[2] > w_accuracy_spy[1] and w_accuracy_spy[2] > w_accuracy_spy[0]:
+	print("For Spy, W = 4 gave the highest accuracy")
+
+print("")
+
+
+# Question 3.1 ==========================================================================================================
+print("Question 3.1")
+
 
 
 print("\n\n\n")
