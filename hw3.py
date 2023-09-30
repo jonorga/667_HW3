@@ -332,4 +332,70 @@ q32(file_length_2, file_spy, "Spy")
 
 
 
+# Question 3.3 ==========================================================================================================
+print("\nQuestion 3.3")
+def q334(file_len, working_file, file_name, symbol):
+	if symbol == "+":
+		antisymbol = "-"
+	else:
+		antisymbol = "+"
+	i = 0
+	w2_total = 0
+	w2_correct = 0
+	w3_total = 0
+	w3_correct = 0
+	w4_total = 0
+	w4_correct  = 0
+	ensem_total = 0
+	ensem_correct = 0
+	while i < file_len:
+		# Compute accuracy for "-" labels against W = 2, 3, 4, and Ensemble Labels
+		if working_file["True Label"].get(i) == symbol:
+			if working_file["Ensemble Label"].get(i) == antisymbol:
+				ensem_total += 1
+			elif working_file["Ensemble Label"].get(i) == symbol:
+				ensem_total += 1
+				ensem_correct += 1
+
+			if working_file["W2"].get(i) == antisymbol:
+				w2_total += 1
+			elif working_file["W2"].get(i) == symbol:
+				w2_total += 1
+				w2_correct += 1
+
+			if working_file["W3"].get(i) == antisymbol:
+				w3_total += 1
+			elif working_file["W3"].get(i) == symbol:
+				w3_total += 1
+				w3_correct += 1
+
+			if working_file["W4"].get(i) == antisymbol:
+				w4_total += 1
+			elif working_file["W4"].get(i) == symbol:
+				w4_total += 1
+				w4_correct += 1
+		i += 1
+
+	print(w2_correct, w2_total)
+	ensem_accuracy = round((ensem_correct / ensem_total) * 100, 2)
+	w2_accuracy = round((w2_correct / w2_total) * 100, 2)
+	w3_accuracy = round((w3_correct / w3_total) * 100, 2)
+	w4_accuracy = round((w4_correct / w4_total) * 100, 2)
+	if ensem_accuracy > w2_accuracy and ensem_accuracy > w3_accuracy and ensem_accuracy > w4_accuracy:
+		result = "more"
+	else:
+		result = "less"
+	print("For the " + file_name + " stock, the Ensemble Label was " + result + " accurate (" + str(ensem_accuracy)
+	 + "%) for \"" + symbol + "\" labels than W = 2 (" + str(w2_accuracy) + "%), W = 3 (" + str(w3_accuracy)
+	 + "%), and W = 4 (" + str(w4_accuracy) + "%)")
+
+q334(file_length, file, "Chipotle", "-")
+q334(file_length_2, file_spy, "Spy", "-")
+
+# Question 3.4 ==========================================================================================================
+print("\nQuestion 3.4")
+q334(file_length, file, "Chipotle", "+")
+q334(file_length_2, file_spy, "Spy", "+")
+
+
 print("\n\n\n")
