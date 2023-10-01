@@ -497,30 +497,34 @@ spy_val = q4(file_length_2, file_spy, "Spy")
 
 
 for cmg_item, spy_item in zip(cmg_val, spy_val):
-	data.append(spy_item)
-	data.append(cmg_item)
+	temp_item = cmg_item + spy_item
+	data.append(temp_item)
+print("tryin")
+data = zip(*data)
+print("plt time")
 
-
-
+plt.rcParams.update({'font.size': 262})
 df = pd.DataFrame(data, columns=['W', 'ticker', 'TP', 'FP', 'TN', 'FN', 'TPR', 'TNR'])
-
+print("plt time 1")
 fig, ax = plt.subplots()
 fig.patch.set_visible(False)
 ax.axis('off')
 ax.axis('tight')
-
+plt.rcParams.update({'font.size': 62})
+print("plt time 2")
 ax.table(cellText=df.values, colLabels=df.columns, loc='center')
 
-fig.tight_layout()
-
+#fig.tight_layout()
+print("3.5")
+fig.savefig("Question_7_Table.png", dpi=1200)
+print("plt time 3")
 plt.show()
+print("plt time 4")
 
-#data = [10,20,30,40,50,60]
-  
-# Create the pandas DataFrame with column name is provided explicitly
-#df = pd.DataFrame(data, columns=['Numbers'])
-
-
+# Question 4.8 ==========================================================================================================
+print("Question 4.8")
+print("Although there was a high amount of false positives for both Spy and Chipotle for W = 2, the true positive"
+	+ " rate was very good. On the flipside the true negative rate would be a very poor indicator to work off of.")
 
 
 print("\n\n\n")
