@@ -1,6 +1,7 @@
 import pandas as pd
 from os.path import exists
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 file = pd.read_csv("cmg.csv")
@@ -503,28 +504,93 @@ print("tryin")
 data = zip(*data)
 print("plt time")
 
-plt.rcParams.update({'font.size': 262})
+#plt.rcParams.update({'font.size': 262})
 df = pd.DataFrame(data, columns=['W', 'ticker', 'TP', 'FP', 'TN', 'FN', 'TPR', 'TNR'])
 print("plt time 1")
 fig, ax = plt.subplots()
 fig.patch.set_visible(False)
 ax.axis('off')
 ax.axis('tight')
-plt.rcParams.update({'font.size': 62})
+#plt.rcParams.update({'font.size': 62})
 print("plt time 2")
 ax.table(cellText=df.values, colLabels=df.columns, loc='center')
 
 #fig.tight_layout()
 print("3.5")
-fig.savefig("Question_7_Table.png", dpi=1200)
+fig.savefig("Question_4.7_Table.png", dpi=1200)
 print("plt time 3")
-plt.show()
+#plt.show()
 print("plt time 4")
 
 # Question 4.8 ==========================================================================================================
-print("Question 4.8")
+print("\nQuestion 4.8")
 print("Although there was a high amount of false positives for both Spy and Chipotle for W = 2, the true positive"
 	+ " rate was very good. On the flipside the true negative rate would be a very poor indicator to work off of.")
+
+
+
+# Question 4.8 ==========================================================================================================
+print("\nQuestion 5.2")
+
+
+i = 0
+count = 0
+balance = 100
+bal_w = 100
+bal_ensem = 100
+first_day = True
+daily_balance = []
+daily_w = []
+daily_ensem = []
+while i < file_length:
+	temp = file["Date"].get(i)
+	if temp.split("/")[2] == "20":
+		count += 1
+		if first_day:
+			your_stock = 100 / file["Close"].get(i)
+			daily_balance.append(100)
+			first_day = False
+		else:
+			daily_balance.append(your_stock * file["Close"].get(i))
+		if bal_w > 0:
+			if file["W2"].get(i + 1) == "+":
+				stock_w = 100 / file["Close"].get(i)
+				bal_w = stock_w * file["Close"].get(i + 1)
+				daily_w.append(bal_w)
+			else:
+				daily_w.append(bal_w)
+		else:
+			daily_w.append(0)
+		if bal_ensem > 0:
+			if file["Ensemble Label"].get(i + 1) == "+":
+				stock_ensem = 100 / file["Close"].get(i)
+				bal_ensem = stock_ensem * file["Close"].get(i + 1)
+				daily_ensem.append(bal_ensem)
+			else:
+				daily_ensem.append(bal_ensem)
+		else:
+			daily_ensem.append(0)
+
+	i += 1
+
+days = np.arange(0, count, 1)
+
+fig1, ax1 = plt.subplots()
+ax1.plot(days, daily_balance, color='g', label="Buy and hold")
+ax1.plot(days, daily_w, color='c', label="W = 2")
+ax1.plot(days, daily_ensem, color='r', label="Ensemble")
+ax1.legend(loc="upper right")
+ax1.set(xlabel='Day', ylabel='Account balance (dollars)',
+       title='Account balance by day for CMG (Trading balance)')
+ax1.grid()
+
+fig1.savefig("Question_5.2.png")
+
+print("There aren't any particular patterns that emerge from W = 2 or the ensemble label. Once again "
+	+ "buy and hold results in the highest account value.\n")
+
+print("Question 6")
+print("Answer: C, Pinocchio plagiarized and violated academic code")
 
 
 print("\n\n\n")
